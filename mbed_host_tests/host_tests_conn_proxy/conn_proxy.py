@@ -88,10 +88,6 @@ def conn_primitive_factory(conn_resource, config, event_queue, logger):
     @param logger Host Test logger instance
     @return Object of type <ConnectorPrimitive> or None if type of connection primitive unknown (conn_resource)
     """
-    polling_timeout = int(config.get('polling_timeout', 60))
-    logger.prn_inf("notify event queue about extra %d sec timeout for serial port pooling"%polling_timeout)
-    event_queue.put(('__timeout', polling_timeout, time()))
-
     if conn_resource == 'serial':
         # Standard serial port connection
         # Notify event queue we will wait additional time for serial port to be ready

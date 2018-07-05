@@ -263,7 +263,7 @@ class DefaultTestSelector(DefaultTestSelectorBase):
         try:
             consume_preamble_events = True
 
-            while (time() - start_time) < timeout_duration:
+            while consume_preamble_events or (time() - start_time) < timeout_duration:
                 # Handle default events like timeout, host_test_name, ...
                 try:
                     (key, value, timestamp) = event_queue.get(timeout=1)
@@ -287,7 +287,6 @@ class DefaultTestSelector(DefaultTestSelectorBase):
                 if consume_preamble_events:
                     if key == '__timeout':
                         # Override default timeout for this event queue
-                        start_time = time()
                         timeout_duration = int(value) # New timeout
                         self.logger.prn_inf("setting timeout to: %d sec"% int(value))
                     elif key == '__version':
@@ -329,6 +328,7 @@ class DefaultTestSelector(DefaultTestSelectorBase):
                             result = self.RESULT_ERROR
                             event_queue.put(('__exit_event_queue', 0, time()))
 
+                        start_time = time()
                         consume_preamble_events = False
                     elif key == '__sync':
                         # This is DUT-Host Test handshake event
