@@ -78,9 +78,8 @@ class RemoteConnectorPrimitive(ConnectorPrimitive):
 
         # Remote DUT connection, flashing and reset...
         try:
-            self.__remote_flashing(self.image_path, forceflash=True)
             self.__remote_connect(baudrate=self.baudrate)
-            self.__remote_reset("hard")
+            self.__remote_flashing(self.image_path, forceflash=True)
         except Exception as error:
             self.logger.prn_err(str(error))
             self.__remote_release()
@@ -93,7 +92,7 @@ class RemoteConnectorPrimitive(ConnectorPrimitive):
         if not self.selected_resource:
             raise Exception("remote resource not exists!")
         try:
-            serial_parameters = self.remote_module.SerialParameters(baudrate=baudrate)
+            serial_parameters = self.remote_module.SerialParameters(baudrate=baudrate, reset="hard")
             self.selected_resource.open_connection(parameters=serial_parameters)
         except Exception as error:
             self.logger.prn_inf("open_connection() failed")
