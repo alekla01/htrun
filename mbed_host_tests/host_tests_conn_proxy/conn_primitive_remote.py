@@ -78,10 +78,9 @@ class RemoteConnectorPrimitive(ConnectorPrimitive):
 
         # Remote DUT connection, flashing and reset...
         try:
-            self.__remote_reset("hard")
             self.__remote_flashing(self.image_path, forceflash=True)
             self.__remote_connect(baudrate=self.baudrate)
-            self.__remote_reset()
+            self.__remote_reset("hard")
         except Exception as error:
             self.logger.prn_err(str(error))
             self.__remote_release()
