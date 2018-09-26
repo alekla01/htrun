@@ -48,9 +48,6 @@ class RemoteConnectorPrimitive(ConnectorPrimitive):
 
     def __remote_init(self, importer):
         """! Initialize DUT using GRM APIs """
-        import os
-        self.logger.prn_inf(os.environ)
-        raise Exception(os.environ)
 
         # We want to load global resource manager module by name from command line (switch --grm)
         try:
